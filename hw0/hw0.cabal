@@ -4,30 +4,35 @@ cabal-version: 1.12
 --
 -- see: https://github.com/sol/hpack
 --
--- hash: 5335cce0e09844f26dbfeb6cdd7eed1da5c17dced77b4715b45048c2f7797fe6
+-- hash: cc4402964bdedc022a2b95e1284f6d2ffa151c8bbfb5f12d546f3f0e6e64c166
 
 name:           hw0
 version:        0.1.0.0
-description:    Please see the README on GitHub at <https://github.com/githubuser/hw0#readme>
-homepage:       https://github.com/githubuser/hw0#readme
-bug-reports:    https://github.com/githubuser/hw0/issues
-author:         Author name here
-maintainer:     example@example.com
-copyright:      2020 Author name here
+description:    Please see the README on GitHub at <https://github.com/NikolayZakharevich/fp-homework/tree/master/hw0>
+homepage:       https://github.com/NikolayZakharevich/fp-homework/tree/master/hw0#readme
+bug-reports:    https://github.com/NikolayZakharevich/fp-homework/tree/master/hw0#issues
+author:         Nikolay Zakharevich
+maintainer:     nikolayzakharevich@gmail.com
+copyright:      2020 Nikolay Zakharevich
 license:        BSD3
 license-file:   LICENSE
 build-type:     Simple
 extra-source-files:
     README.md
-    ChangeLog.md
 
 source-repository head
   type: git
-  location: https://github.com/githubuser/hw0
+  location: https://github.com/NikolayZakharevich/fp-homework/tree/master/hw0
 
 library
   exposed-modules:
-      Lib
+      Task1
+      Task2
+      Task3
+      Task4
+      Task5
+      Task6
+      Task7
   other-modules:
       Paths_hw0
   hs-source-dirs:
@@ -52,11 +57,14 @@ test-suite hw0-test
   type: exitcode-stdio-1.0
   main-is: Spec.hs
   other-modules:
+      TasksSpec
       Paths_hw0
   hs-source-dirs:
       test
   ghc-options: -threaded -rtsopts -with-rtsopts=-N
   build-depends:
       base >=4.7 && <5
+    , hspec
+    , hspec-discover
     , hw0
   default-language: Haskell2010
