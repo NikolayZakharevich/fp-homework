@@ -25,6 +25,8 @@ spec =
     testFibonacci1
     testFibonacci2
     testFibonacci3
+    testFibonacci4
+    testFibonacci5
     testMap1
     testMap2
     testMap3
@@ -78,6 +80,12 @@ testFibonacci2 = test "Fibonacci: F(2) == 1" (fibonacci 2) 1
 
 testFibonacci3 :: SpecWith (Arg Expectation)
 testFibonacci3 = test "Fibonacci: F(10) == 55" (fibonacci 10) 55
+
+testFibonacci4 :: SpecWith (Arg Expectation)
+testFibonacci4 = test "Fibonacci: F(-5) == 5" (fibonacci (-5)) 5
+
+testFibonacci5 :: SpecWith (Arg Expectation)
+testFibonacci5 = test "Fibonacci: F(6) == -8" (fibonacci (-6)) (-8)
 
 testMap1 :: SpecWith (Arg Expectation)
 testMap1 = test "Map: map (*1) [] == []" (mapFix (* 1) []) []

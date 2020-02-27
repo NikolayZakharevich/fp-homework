@@ -18,7 +18,7 @@ doubleNeg x f = f x
 -- by Glivenko's theorem in intuitionistic logic (because of validity
 -- of exclusion introduction in classical logic).
 excludedNeg :: Neg (Neg (Either a (Neg a)))
-excludedNeg = ninthAx (counterposition Left) (counterposition Right)
+excludedNeg = ninthAx (contraposition Left) (contraposition Right)
 
 -- | Represents Peirce law. This law does not hold in
 -- intuitionistic logic, so the function is undefined.
@@ -33,10 +33,12 @@ doubleNegElim = undefined
 
 -- | Represents double negation elimination of negation.
 thirdNegElim :: Neg (Neg (Neg a)) -> Neg a
-thirdNegElim = counterposition doubleNeg
+thirdNegElim = contraposition doubleNeg
 
+-- | Represents ninth axiom in intuitionistic logic.
 ninthAx :: (a -> b) -> (a -> Neg b) -> Neg a
 ninthAx aToB aToBtoVoid a = aToBtoVoid a (aToB a)
 
-counterposition :: (a -> b) -> (Neg b -> Neg a)
-counterposition aToB bToVoid = bToVoid . aToB
+-- | Represents contraposition.
+contraposition :: (a -> b) -> (Neg b -> Neg a)
+contraposition aToB bToVoid = bToVoid . aToB

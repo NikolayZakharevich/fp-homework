@@ -95,7 +95,7 @@ expr2 = lambda list
             powerResult :: Integer
             powerResult = appliedLeftOperand (6 :: Integer)
 
--- | Takes one argument and always return True.
+-- | Takes one argument and always returns True.
 -- Initial expression:
 -- `let impl = \x y -> not x || y in
 --    let isMod2 = \x -> x `mod` 2 == 0 in
