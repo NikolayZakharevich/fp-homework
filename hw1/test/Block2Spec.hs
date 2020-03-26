@@ -9,7 +9,7 @@ import TestUtil
 
 spec :: Spec
 spec =
-  describe "Block 2. Task 2" $ do
+  describe "Task 2" $ do
     testSplitOn1
     testSplitOn2
     testSplitOn3
@@ -17,7 +17,7 @@ spec =
     testJoinWith2
     testJoinWith3
     testJoinWith4
-    testIdempotenceProperty
+    testInverseProperty
 
 testSplitOn1 :: SpecWith (Arg Expectation)
 testSplitOn1 =
@@ -64,5 +64,5 @@ inverseProperty :: Char -> String -> Bool
 inverseProperty delimiter str =
   (joinWith delimiter . splitOn delimiter) str == str
 
-testIdempotenceProperty :: Spec
-testIdempotenceProperty = pTest "holds idempotence property" inverseProperty
+testInverseProperty :: Spec
+testInverseProperty = pTest "holds idempotence property" inverseProperty

@@ -121,34 +121,34 @@ five :: Nat
 five = S four
 
 testNatAdd1 :: SpecWith (Arg Expectation)
-testNatAdd1 = uTest "adds a lesser number to a greater number" (two + one) three
+testNatAdd1 = uTest "adds a lesser number to a greater number" (two `add` one) three
 
 testNatAdd2 :: SpecWith (Arg Expectation)
-testNatAdd2 = uTest "adds a greater number to a lesser number" (one + two) three
+testNatAdd2 = uTest "adds a greater number to a lesser number" (one `add` two) three
 
 testNatAdd3 :: SpecWith (Arg Expectation)
-testNatAdd3 = uTest "adds zero" (three + Z) three
+testNatAdd3 = uTest "adds zero" (three `add` Z) three
 
 testNatMul1 :: SpecWith (Arg Expectation)
 testNatMul1 =
-  uTest "multiplies a lesser number by a greater number" (one * two) two
+  uTest "multiplies a lesser number by a greater number" (one `mul` two) two
 
 testNatMul2 :: SpecWith (Arg Expectation)
-testNatMul2 = uTest "multiplies equal numbers" (two * two) four
+testNatMul2 = uTest "multiplies equal numbers" (two `mul` two) four
 
 testNatMul3 :: SpecWith (Arg Expectation)
-testNatMul3 = uTest "multiplies by zero" (one * zero) zero
+testNatMul3 = uTest "multiplies by zero" (one `mul` zero) zero
 
 testNatSub1 :: SpecWith (Arg Expectation)
 testNatSub1 =
-  uTest "subtracts a smaller number from a larger number" (four - one) three
+  uTest "subtracts a smaller number from a larger number" (four `sub` one) three
 
 testNatSub2 :: SpecWith (Arg Expectation)
 testNatSub2 =
-  uTest "subtracts a greater number from a smaller number" (one - four) zero
+  uTest "subtracts a greater number from a smaller number" (one `sub` four) zero
 
 testNatSub3 :: SpecWith (Arg Expectation)
-testNatSub3 = uTest "subtracts zero" (one - zero) one
+testNatSub3 = uTest "subtracts zero" (one `sub` zero) one
 
 testNatToInt1 :: SpecWith (Arg Expectation)
 testNatToInt1 = uTest "converts Nat five to 5" (toInt five) 5
@@ -158,14 +158,14 @@ testNatToInt2 = uTest "converts Nat zero to 0" (toInt zero) 0
 
 testNatCompare1 :: SpecWith (Arg Expectation)
 testNatCompare1 =
-  uTest "compares a lesser number to a greater number" (two < three) True
+  uTest "compares a lesser number to a greater number" (two `lt` three) True
 
 testNatCompare2 :: SpecWith (Arg Expectation)
 testNatCompare2 =
-  uTest "compares a greater number to a lesser number" (two >= one) True
+  uTest "compares a greater number to a lesser number" (two `gte` one) True
 
 testNatCompare3 :: SpecWith (Arg Expectation)
-testNatCompare3 = uTest "compares equal zeroes" (zero == zero) True
+testNatCompare3 = uTest "compares equal zeroes" (zero `eq` zero) True
 
 testNatIsEven1 :: SpecWith (Arg Expectation)
 testNatIsEven1 = uTest "checks that two is even" (isEven two) True
@@ -216,19 +216,19 @@ testNatMod4 :: SpecWith (Arg Expectation)
 testNatMod4 = uTest "returns zero remainder" (four `modNat` two) (Right zero)
 
 sumCommutativityProperty :: Nat -> Nat -> Bool
-sumCommutativityProperty a b = a + b == b + a
+sumCommutativityProperty a b = a `add` b == b `add` a
 
 mulCommutativityProperty :: Nat -> Nat -> Bool
-mulCommutativityProperty a b = a * b == b * a
+mulCommutativityProperty a b = a `mul` b == b `mul` a
 
 sumAssociativityProperty :: Nat -> Nat -> Nat -> Bool
-sumAssociativityProperty a b c = (a + b) + c == a + (b + c)
+sumAssociativityProperty a b c = (a `add` b) `add` c == a `add` (b `add` c)
 
 mulAssociativityProperty :: Nat -> Nat -> Nat -> Bool
-mulAssociativityProperty a b c = (a * b) * c == a * (b * c)
+mulAssociativityProperty a b c = (a `mul` b) `mul` c == a `mul` (b `mul` c)
 
 distributivityProperty :: Nat -> Nat -> Nat -> Bool
-distributivityProperty a b c = a * (b + c) == a * b + a * c
+distributivityProperty a b c = a `mul` (b `add` c) == (a `mul` b) `add` (a `mul` c)
 
 testSumCommutativityProperty :: Spec
 testSumCommutativityProperty =

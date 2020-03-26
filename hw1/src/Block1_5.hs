@@ -53,8 +53,7 @@ insert (TreeNode keys left right) x =
 
 -- | Returns tree made from list elements
 fromList :: Ord a => [a] -> Bst a
-fromList []     = Leaf
-fromList (x:xs) = insert (fromList xs) x
+fromList = foldl insert Leaf 
 
 -- | Delete given element from tree.
 delete :: Ord a => Bst a -> a -> Bst a
@@ -65,7 +64,7 @@ delete (TreeNode keys left right) x =
     GT -> TreeNode keys left (delete right x)
     EQ -> delete' keys left right
       where delete' :: NonEmpty a -> Bst a -> Bst a -> Bst a
-            delete' (_ :| y:xs) l r = TreeNode (y :| xs) l r
+            delete' (_ :| y : xs) l r = TreeNode (y :| xs) l r
             delete' _ Leaf Leaf = Leaf
             delete' _ Leaf r = r
             delete' _ l Leaf = l
@@ -87,15 +86,13 @@ instance Foldable Bst where
   foldMap _ Leaf = mempty
   foldMap f (TreeNode keys left right) =
     case keys of
-      (x :| []) -> mappend (mappend (foldMap f left) (f x)) (foldMap f right)
-      (x :| y:xs) ->
-        mappend
-          (mappend (foldMap f left) (f x))
-          (foldMap f $ TreeNode (y :| xs) Leaf right)
+      (x :| []) -> (foldMap f left <> f x) <> foldMap f right
+      (x :| y : xs) ->
+        (foldMap f left <> f x) <> foldMap f (TreeNode (y :| xs) Leaf right)
   foldr :: (a -> b -> b) -> b -> Bst a -> b
   foldr _ z Leaf = z
   foldr f z (TreeNode keys left right) =
     case keys of
       (x :| []) -> foldr f (f x (foldr f z right)) left
-      (x :| y:xs) ->
+      (x :| y : xs) ->
         foldr f (f x (foldr f z right)) (TreeNode (y :| xs) left Leaf)

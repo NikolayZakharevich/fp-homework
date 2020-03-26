@@ -4,14 +4,20 @@ module Block1
   , afterDays
   , isWeekend
   , daysToParty
-  , Nat(..)
+  , Nat(S, Z)
+  , add
+  , mul
+  , sub
+  , lt
+  , gte
+  , eq
   , toInt
   , isEven
   , divNat
   , modNat
   ) where
 
-import Test.Hspec.LeanCheck (Listable, cons0, tiers, (\/))
+import Test.Hspec.LeanCheck (Listable, cons1, tiers)
 
 -- Task 1 (days of week):
 data DayOfWeek
@@ -123,37 +129,41 @@ data Nat
   | S Nat
   deriving (Show)
 
--- | Equality check for natural numbers.
-instance Eq Nat where
-  Z == Z = True
-  (S a) == (S b) = a == b
-  _ == _ = False
+-- | Sum of two natural numbers. Implementation based on equations:
+-- a + (b + 1) = (a + 1) + b
+-- a + 0 = a
+add :: Nat -> Nat -> Nat
+a `add` Z = a
+a `add` (S b) = S a `add` b
 
--- | Comparing natural numbers.
-instance Ord Nat where
-  compare Z Z         = EQ
-  compare (S _) Z     = GT
-  compare Z (S _)     = LT
-  compare (S a) (S b) = compare a b
+-- | Product of two natural numbers. Implementation based on equations:
+-- a * (b + 1) = (a * b) + a
+-- a + 0 = a
+mul :: Nat -> Nat -> Nat
+_ `mul` Z = Z
+a `mul` (S b) = (a `mul` b) `add` a
 
-instance Num Nat where
-  abs = undefined
-  signum = undefined
-  fromInteger = undefined
-  -- | Sum of two natural numbers. Implementation based on equations:
-  -- a + (b + 1) = (a + 1) + b
-  -- a + 0 = a
-  a + Z = a
-  a + (S b) = S a + b
-  -- | Product of two natural numbers. Implementation based on equations:
-  -- a * (b + 1) = (a * b) + a
-  -- a + 0 = a
-  _ * Z = Z
-  a * (S b) = (a * b) + a
-  -- | Difference of two natural numbers. If 'a' less than 'b' then returns 0.
-  Z - _ = Z
-  a - Z = a
-  (S a) - (S b) = a - b
+-- | Difference of two natural numbers. If 'a' less than 'b' then returns 0.
+sub :: Nat -> Nat -> Nat
+Z `sub` _ = Z
+a `sub` Z = a
+(S a) `sub` (S b) = a `sub` b
+
+-- | Check if one natural number is less that the other one.
+lt :: Nat -> Nat -> Bool
+lt Z (S _)     = True
+lt (S a) (S b) = lt a b
+lt _ _         = False
+
+-- | Check if two natural numbers are equal.
+eq :: Nat -> Nat -> Bool
+eq Z Z         = True
+eq (S a) (S b) = eq a b
+eq _ _         = False
+
+-- | Check if one natural number is greater than or equal to the other one.
+gte :: Nat -> Nat -> Bool
+gte a b = not (lt a b)
 
 -- | Nat to Int conversion.
 toInt :: Nat -> Int
@@ -169,17 +179,22 @@ isEven (S x) = not (isEven x)
 divNat :: Nat -> Nat -> Either String Nat
 _ `divNat` Z = Left "Division by zero"
 a `divNat` b
-  | a >= b = (S Z +) <$> ((a - b) `divNat` b)
+  | a `gte` b = (S Z `add`) <$> ((a `sub` b) `divNat` b)
   | otherwise = Right Z
 
 -- | Remainder of two natural numbers:
 -- a % b = a - b * (a / b)
 modNat :: Nat -> Nat -> Either String Nat
-a `modNat` b = (a -) . (b *) <$> (a `divNat` b)
+a `modNat` b = (a `sub`) . (b `mul`) <$> (a `divNat` b)
 
+-- Two instances, necessary for tests
 instance Listable Nat where
-  tiers = kek Z 0
+  tiers = cons1 intToNat
     where
-      kek :: Nat -> Int -> [[Nat]]
-      kek a 100     = cons0 a
-      kek a counter = cons0 a \/ kek (S a) (counter + 1)
+      intToNat :: Int -> Nat
+      intToNat a
+        | a <= 0 = Z
+        | otherwise = S (intToNat (a - 1))
+
+instance Eq Nat where
+  (==) = eq

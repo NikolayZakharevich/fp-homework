@@ -31,6 +31,7 @@ library
      Block2
      Block3
      Block4
+     Block5
   other-modules:
       Paths_hw1
   hs-source-dirs:
@@ -38,6 +39,7 @@ library
   build-depends:
       base >=4.7 && <5
     , hspec-leancheck
+    , mtl
   default-language: Haskell2010
 
 executable hw1-exe
@@ -50,6 +52,7 @@ executable hw1-exe
   build-depends:
       base >=4.7 && <5
     , hw1
+    , mtl
     , hspec-leancheck
   default-language: Haskell2010
 
@@ -61,6 +64,9 @@ test-suite hw1-test
       Block1Spec
       Block1_5Spec
       Block2Spec
+      Block3Spec
+      Block4Spec
+      Block5Spec
       Paths_hw1
   hs-source-dirs:
       test
@@ -71,4 +77,5 @@ test-suite hw1-test
     , hspec
     , hspec-discover
     , hspec-leancheck
+    , mtl
   default-language: Haskell2010
