@@ -33,12 +33,17 @@ data ArithmeticError
   = DivisionByZero
   | NegativePower
   deriving (Show)
-  
+
 instance Eq ArithmeticError where
     DivisionByZero == DivisionByZero = True
     NegativePower == NegativePower = True
     _ == _ = False
 
+-- | Evaluates expression. Example:
+--
+-- >>> eval (Add (Const 2) (Const 5))
+-- Right 7
+--
 eval :: Expr -> Either ArithmeticError Int
 eval (Const x) = Right x
 eval binop =
@@ -64,6 +69,7 @@ eval binop =
 
 type Queue a = ([a], [a])
 
+-- | Pops out front element of the queue
 pop :: State (Queue a) (Maybe a)
 pop = state pop'
   where
@@ -74,9 +80,15 @@ pop = state pop'
         (x : xs) = reverse l
     pop' (l, y : ys) = (Just y, (l, ys))
 
+-- | Push element to the back of the queue
 push :: a -> State (Queue a) ()
 push x = modify $ \(l, r) -> (x : l, r)
 
+-- | Implementation of Simple Moving Average algorithm. Example:
+--
+-- >>> moving 4 [1, 5, 3, 8, 7, 9, 6]
+-- [1.0, 3.0, 3.0, 4.25, 5.75, 6.75, 7.5]
+--
 moving :: Int -> [Int] -> [Double]
 moving sz list = evalState (steps list 0 0 []) ([], [])
   where
