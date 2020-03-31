@@ -68,6 +68,7 @@ test-suite hw1-test
       Block3Spec
       Block4Spec
       Block5Spec
+      Block6Spec
       Paths_hw1
   hs-source-dirs:
       test
