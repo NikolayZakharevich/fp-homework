@@ -1,0 +1,67 @@
+cabal-version: 1.12
+
+-- This file has been generated from package.yaml by hpack version 0.31.2.
+--
+-- see: https://github.com/sol/hpack
+--
+-- hash: 80224800068ca78ed856b8f8700dff7016ae299d91eaded58d9856092d7a8c53
+
+name:           hw1-second-chance
+version:        0.1.0.0
+description:    Please see the README on GitHub at <https://github.com/NikolayZakharevich/fp-homework/tree/master/hw1>
+homepage:       https://github.com/NikolayZakharevich/fp-homework/tree/master/hw1#readme
+bug-reports:    https://github.com/NikolayZakharevich/fp-homework/tree/master/hw1#issues
+author:         Nikolay Zakharevich
+maintainer:     nikolayzakharevich@gmail.com
+copyright:      2020 Nikolay Zakharevich
+license:        BSD3
+license-file:   LICENSE
+build-type:     Simple
+extra-source-files:
+    README.md
+
+source-repository head
+  type: git
+  location: https://github.com/githubuser/hw1-second-chance
+
+library
+  exposed-modules:
+      Block6
+  other-modules:
+      Paths_hw1_second_chance
+  hs-source-dirs:
+      src
+  build-depends:
+      base >=4.7 && <5
+    , hspec-leancheck
+  default-language: Haskell2010
+
+executable hw1-second-chance-exe
+  main-is: Main.hs
+  other-modules:
+      Paths_hw1_second_chance
+  hs-source-dirs:
+      app
+  ghc-options: -threaded -rtsopts -with-rtsopts=-N
+  build-depends:
+      base >=4.7 && <5
+    , hw1-second-chance
+  default-language: Haskell2010
+
+test-suite hw1-second-chance-test
+  type: exitcode-stdio-1.0
+  main-is: Spec.hs
+  other-modules:
+     TestUtil
+     Block6Spec
+     Paths_hw1_second_chance
+  hs-source-dirs:
+      test
+  ghc-options: -threaded -rtsopts -with-rtsopts=-N
+  build-depends:
+      base >=4.7 && <5
+    , hw1-second-chance
+    , hspec
+    , hspec-discover
+    , hspec-leancheck
+  default-language: Haskell2010
