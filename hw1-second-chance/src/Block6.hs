@@ -122,18 +122,17 @@ getIntegerParser withNegative = do
   return $ sign * result
   where
     parseSign =
-      (element '+' >>= (const $ return 1)) <|>
+      (element '+' >>= const (return 1)) <|>
       if withNegative
-      then (element '-' >>= (const $ return (-1))) <|> return 1
-      else return 1
-
+        then (element '-' >>= const (return (-1))) <|> return 1
+        else return 1
     parseDigits = (parseFirstDigit >>= parseOtherDigits) <|> parseZero
     parseFirstDigit = digitToInt <$> satisfy (liftA2 (&&) isDigit (/= '0'))
     parseOtherDigits acc = (parseOtherDigit >>= parseNextDigit) <|> pure acc
       where
         parseOtherDigit = digitToInt <$> satisfy isDigit
         parseNextDigit digit = parseOtherDigits (acc * 10 + digit)
-    parseZero = digitToInt <$> (element '0')
+    parseZero = digitToInt <$> element '0'
 
 
 -- Task 4 (tricky parser):
@@ -149,11 +148,11 @@ getIntegerParser withNegative = do
 --
 listlistParser :: Parser Char [[Int]]
 listlistParser =
-  (parseList `add` (many $ skipSpaces *> comma *> parseList)) <|> pure []
+  (parseList `add` many (skipSpaces *> comma *> parseList)) <|> pure []
   where
     parseList = parseLength >>= parseElements
     parseLength = skipSpaces *> getIntegerParser False
-    parseElements = (flip replicateM) parseElement
+    parseElements = flip replicateM parseElement
     parseElement = skipSpaces *> comma *> skipSpaces *> parseInt
     comma = element ','
     add = liftA2 (:)
@@ -161,6 +160,7 @@ listlistParser =
       many
         (Parser $ \case
            [] -> Nothing
-           (x:xs) -> if isSpace x
-             then Just ((), xs)
-             else Nothing)
+           (x : xs) ->
+             if isSpace x
+               then Just ((), xs)
+               else Nothing)
